@@ -14,10 +14,10 @@ const Input: React.FC<Props> = (props: Props) => {
     setState({ ...state, [event.target.name]: event.target.value })
   }
   const getStatus = (): string => {
-    return '🔴'
+    return error ? '🔴' : '🟢'
   }
   const getTitle = (): string => {
-    return error
+    return error || 'Tudo certo!'
   }
   return (
     <div className={Styles.inputWrap}>
