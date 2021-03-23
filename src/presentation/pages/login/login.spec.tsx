@@ -45,27 +45,11 @@ const simulateValidSubmit = async (
   email = Faker.internet.email(),
   password = Faker.internet.password()
 ): Promise<void> => {
-  populateEmailField(sut, email)
-  populatePasswordField(sut, password)
+  FormHelper.populateField(sut, 'email', email)
+  FormHelper.populateField(sut, 'password', password)
   const form = sut.getByTestId('form')
   fireEvent.submit(form)
   await waitFor(() => form)
-}
-
-const populateEmailField = (
-  sut: RenderResult,
-  email = Faker.internet.email()
-): void => {
-  const emailInput = sut.getByTestId('email')
-  fireEvent.input(emailInput, { target: { value: email } })
-}
-
-const populatePasswordField = (
-  sut: RenderResult,
-  password = Faker.internet.password()
-): void => {
-  const passwordInput = sut.getByTestId('password')
-  fireEvent.input(passwordInput, { target: { value: password } })
 }
 
 const testElementExists = (sut: RenderResult, fieldName: string): void => {
@@ -94,7 +78,7 @@ describe('Login Component', () => {
   test('should call validation with correct email', () => {
     const { sut, validationSpy } = makeSut()
     const email = Faker.internet.email()
-    populateEmailField(sut, email)
+    FormHelper.populateField(sut, 'email', email)
     expect(validationSpy.fieldName).toEqual('email')
     expect(validationSpy.fieldValue).toEqual(email)
   })
@@ -102,7 +86,7 @@ describe('Login Component', () => {
   test('should call validation with correct password', () => {
     const { sut, validationSpy } = makeSut()
     const password = Faker.internet.password()
-    populatePasswordField(sut, password)
+    FormHelper.populateField(sut, 'password', password)
     expect(validationSpy.fieldName).toEqual('password')
     expect(validationSpy.fieldValue).toEqual(password)
   })
@@ -110,33 +94,33 @@ describe('Login Component', () => {
   test('should show email error if validation fails', () => {
     const validationError = Faker.random.words()
     const { sut } = makeSut({ validationError })
-    populateEmailField(sut)
+    FormHelper.populateField(sut, 'email')
     FormHelper.testStatusForField(sut, 'email', validationError)
   })
 
   test('should show password error if validation fails', () => {
     const validationError = Faker.random.words()
     const { sut } = makeSut({ validationError })
-    populatePasswordField(sut)
+    FormHelper.populateField(sut, 'email')
     FormHelper.testStatusForField(sut, 'password', validationError)
   })
 
   test('should show valid email state if validation succeeds', () => {
     const { sut } = makeSut()
-    populateEmailField(sut)
+    FormHelper.populateField(sut, 'email')
     FormHelper.testStatusForField(sut, 'email')
   })
 
   test('should show valid password state if validation succeeds', () => {
     const { sut } = makeSut()
-    populatePasswordField(sut)
+    FormHelper.populateField(sut, 'password')
     FormHelper.testStatusForField(sut, 'password')
   })
 
   test('should enable submit button if form is valid', () => {
     const { sut } = makeSut()
-    populateEmailField(sut)
-    populatePasswordField(sut)
+    FormHelper.populateField(sut, 'email')
+    FormHelper.populateField(sut, 'password')
     FormHelper.testButtonIsDisabled(sut, 'submit', false)
   })
 
