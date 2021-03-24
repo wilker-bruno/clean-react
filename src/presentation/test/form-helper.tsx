@@ -10,6 +10,11 @@ export const populateField = (
   fireEvent.input(input, { target: { value: fieldValue } })
 }
 
+export const testElementExists = (sut: RenderResult, fieldName: string): void => {
+  const element = sut.getByTestId(fieldName)
+  expect(element).toBeTruthy()
+}
+
 export const testChildCount = (sut: RenderResult, fieldName: string, count: number): void => {
   const element = sut.getByTestId(fieldName)
   expect(element.childElementCount).toBe(count)
