@@ -4,7 +4,8 @@ import {
   Footer,
   LoginHeader,
   Input,
-  FormStatus
+  FormStatus,
+  SubmitButton
 } from '@/presentation/components'
 import Context from '@/presentation/contexts/form/form-context'
 import Styles from './signup-styles.scss'
@@ -21,6 +22,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
   const history = useHistory()
   const [state, setState] = useState({
     isLoading: false,
+    isFormInvalid: true,
     name: '',
     email: '',
     password: '',
@@ -52,10 +54,14 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
       ({ ...oldState, passwordConfirmationError: validation.validate('name', state.passwordConfirmation) }))
   }, [state.passwordConfirmation])
 
+  useEffect(() => {
+    setState((oldState) => ({ ...oldState, isFormInvalid: !!state.nameError || !!state.emailError || !!state.passwordError || !!state.passwordConfirmationError }))
+  }, [state.nameError, state.emailError, state.passwordError, state.passwordConfirmationError])
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     try {
-      if (state.isLoading || state.nameError || state.emailError || state.passwordError || state.passwordConfirmationError) {
+      if (state.isLoading || state.isFormInvalid) {
         return
       }
       setState(oldState => ({ ...oldState, isLoading: true }))
@@ -82,12 +88,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
         <Input type="email" name="email" placeholder="Digite seu email" />
         <Input type="password" name="password" placeholder="Digite sua senha" />
         <Input type="password" name="passwordConfirmation" placeholder="Repita sua senha" />
-        <button data-testid="submit"
-          disabled={!!state.nameError || !!state.emailError || !!state.passwordError || !!state.passwordConfirmationError}
-          className={Styles.submit}
-          type="submit">
-          Entrar
-        </button>
+        <SubmitButton text="Cadastrar" />
         <Link data-testid="login-link" replace to="/login" className={Styles.link}>Voltar para login</Link>
         <FormStatus />
       </form>

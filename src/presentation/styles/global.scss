@@ -11,6 +11,7 @@
 body {
   background-color: $background;
 }
+
 input[type="email"],
 input[type="text"],
 input[type="password"] {
@@ -34,5 +35,14 @@ button {
 
   &:hover {
     opacity: 0.9;
+  }
+
+  &:disabled {
+    background-color: $disabledBackground;
+    color: $disabledColor;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }
