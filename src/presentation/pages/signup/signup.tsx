@@ -36,22 +36,29 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
 
   useEffect(() => {
     setState((oldState) =>
-      ({ ...oldState, nameError: validation.validate('name', { name: state.name }) }))
+      ({ ...oldState, nameError: validation.validate('name', { name: oldState.name }) }))
   }, [state.name])
 
   useEffect(() => {
     setState((oldState) =>
-      ({ ...oldState, emailError: validation.validate('name', { email: state.email }) }))
+      ({ ...oldState, emailError: validation.validate('email', { email: oldState.email }) }))
   }, [state.email])
 
   useEffect(() => {
     setState((oldState) =>
-      ({ ...oldState, passwordError: validation.validate('name', { password: state.password }) }))
+      ({ ...oldState, passwordError: validation.validate('password', { password: oldState.password }) }))
   }, [state.password])
 
   useEffect(() => {
     setState((oldState) =>
-      ({ ...oldState, passwordConfirmationError: validation.validate('name', { passwordConfirmation: state.passwordConfirmation }) }))
+      ({
+        ...oldState,
+        passwordConfirmationError: validation.validate('passwordConfirmation',
+          {
+            password: oldState.password,
+            passwordConfirmation: oldState.passwordConfirmation
+          })
+      }))
   }, [state.passwordConfirmation])
 
   useEffect(() => {
