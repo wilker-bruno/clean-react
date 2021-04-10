@@ -1,5 +1,5 @@
 import faker from 'faker'
-import * as HttpMocks from './login-mocks'
+import * as HttpMocks from '../support/login-mocks'
 import * as FormHelper from '../support/form-helper'
 
 const simulateValidSubmit = (): void => {
